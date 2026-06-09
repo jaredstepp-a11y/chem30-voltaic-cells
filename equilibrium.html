@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chemical Equilibrium & Acid-Base Titrations — Chemistry 30</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f5f5f3; color: #1a1a18; min-height: 100vh; padding: 16px; }
+  .app { max-width: 820px; margin: 0 auto; background: white; border-radius: 12px; box-shadow: 0 2px 16px rgba(0,0,0,0.1); overflow: hidden; }
+  .hdr { padding: 1.25rem 1.25rem 0; border-bottom: 1px solid #e8e7e3; background: white; }
+  .ttl { font-size: 19px; font-weight: 600; color: #1a1a18; margin-bottom: 2px; }
+  .sub { font-size: 13px; color: #666663; margin-bottom: 0.75rem; }
+  .tabs { display: flex; overflow-x: auto; scrollbar-width: none; }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tab { padding: 9px 13px; font-size: 13px; color: #666663; cursor: pointer; border-bottom: 2px solid transparent; white-space: nowrap; user-select: none; transition: color .15s; }
+  .tab:hover { color: #1a1a18; }
+  .tab.on { color: #1D9E75; border-bottom-color: #1D9E75; font-weight: 500; }
+  .tab.done::after { content: ' ✓'; font-size: 11px; color: #1D9E75; }
+  .body { padding: 1.25rem; }
+  .sec { display: none; } .sec.on { display: block; }
+  .pbw { height: 3px; background: #f0efe9; border-radius: 2px; margin-bottom: 1.25rem; }
+  .pb  { height: 3px; background: #1D9E75; border-radius: 2px; transition: width .4s; }
+  .cbox { background: #f5f5f3; border-radius: 10px; padding: 1rem 1.25rem; margin-bottom: 1rem; }
+  .cbox-ttl { font-size: 14px; font-weight: 600; color: #1a1a18; margin-bottom: 5px; }
+  .cbox-body { font-size: 14px; color: #444441; line-height: 1.6; }
+  .igrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(145px, 1fr)); gap: 9px; margin-bottom: 1.1rem; }
+  .icard { background: white; border: 1px solid #e8e7e3; border-radius: 10px; padding: 11px 13px; }
+  .icard-lbl { font-size: 12px; color: #888785; margin-bottom: 3px; }
+  .icard-val { font-size: 15px; font-weight: 600; color: #1a1a18; }
+  .acc { border: 1px solid #e8e7e3; border-radius: 8px; margin-bottom: 8px; overflow: hidden; }
+  .acc-btn { display: flex; justify-content: space-between; align-items: center; padding: 11px 14px; cursor: pointer; font-size: 14px; font-weight: 500; color: #1a1a18; background: white; user-select: none; gap: 10px; }
+  .acc-btn:hover { background: #f5f5f3; }
+  .acc-ico { font-size: 11px; color: #888785; transition: transform .2s; flex-shrink: 0; }
+  .acc-ico.open { transform: rotate(180deg); }
+  .acc-body { padding: 12px 14px 14px; font-size: 14px; color: #444441; line-height: 1.75; border-top: 1px solid #e8e7e3; }
+  .acc-body p { margin-top: 8px; } .acc-body p:first-child { margin-top: 0; }
+  .cl { border-radius: 0 8px 8px 0; padding: 9px 13px; margin: 9px 0; font-size: 13px; line-height: 1.6; }
+  .cl-t { background: #E1F5EE; color: #085041; border-left: 3px solid #1D9E75; }
+  .cl-a { background: #FAEEDA; color: #633806; border-left: 3px solid #BA7517; }
+  .cl-b { background: #E6F1FB; color: #0C447C; border-left: 3px solid #378ADD; }
+  .cl-r { background: #FCEBEB; color: #791F1F; border-left: 3px solid #E24B4A; }
+  .vid-section { margin: 1rem 0; }
+  .vid-lbl { font-size: 13px; font-weight: 500; color: #666663; margin-bottom: 7px; display: flex; align-items: center; gap: 6px; }
+  .vid-lbl span { background: #FF0000; color: white; font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 3px; }
+  .vid-wrap { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 10px; border: 1px solid #e8e7e3; }
+  .vid-wrap iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
+  .vid-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media (max-width: 560px) { .vid-grid { grid-template-columns: 1fr; } }
+  .wx-steps { display: flex; flex-direction: column; gap: 8px; margin-bottom: 1rem; }
+  .wx-step { display: flex; gap: 11px; align-items: flex-start; }
+  .wx-n { width: 26px; height: 26px; border-radius: 50%; background: #E1F5EE; color: #085041; font-size: 12px; font-weight: 600; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; }
+  .wx-c { flex: 1; }
+  .wx-lbl { font-size: 13px; font-weight: 600; color: #1a1a18; margin-bottom: 3px; }
+  .wx-det { font-size: 13px; color: #444441; }
+  .wx-eq { font-family: 'Courier New', monospace; font-size: 13px; background: #f5f5f3; border-radius: 6px; padding: 6px 10px; margin-top: 5px; color: #1a1a18; display: block; }
+  .fbox { background: #f5f5f3; border-radius: 8px; padding: 11px 15px; font-family: 'Courier New', monospace; font-size: 15px; text-align: center; margin: 10px 0; color: #1a1a18; }
+  .ccard { background: white; border: 1px solid #e8e7e3; border-radius: 10px; padding: 1.1rem 1.25rem; margin-bottom: 1rem; }
+  input[type=number] { background: white; border: 1px solid #d0cfc9; border-radius: 6px; color: #1a1a18; font-family: inherit; }
+  input:focus { outline: 2px solid #1D9E75; outline-offset: 1px; }
+  .qhead { font-size: 11px; font-weight: 600; color: #888785; margin-bottom: 5px; letter-spacing: .06em; text-transform: uppercase; }
+  .qprompt { font-size: 14px; font-weight: 600; color: #1a1a18; margin-bottom: 9px; line-height: 1.5; }
+  .qopt { display: block; padding: 9px 13px; margin: 5px 0; border: 1px solid #e8e7e3; border-radius: 8px; cursor: pointer; font-size: 14px; color: #1a1a18; background: white; user-select: none; transition: background .12s; }
+  .qopt:hover { background: #f5f5f3; }
+  .qopt.right { background: #E1F5EE; border-color: #1D9E75; color: #085041; pointer-events: none; }
+  .qopt.wrong { background: #FAECE7; border-color: #D85A30; color: #4A1B0C; pointer-events: none; }
+  .qopt.locked { pointer-events: none; }
+  .qfb { font-size: 13px; padding: 9px 13px; border-radius: 8px; margin-top: 7px; display: none; line-height: 1.5; }
+  .qfb.on { display: block; } .qfb.right { background: #E1F5EE; color: #085041; } .qfb.wrong { background: #FAECE7; color: #4A1B0C; }
+  .hrule { border: none; border-top: 1px solid #e8e7e3; margin: 1.1rem 0; }
+  .btn-next { margin-top: 1.25rem; padding: 9px 20px; font-size: 14px; font-weight: 500; color: #085041; background: #E1F5EE; border: 1px solid #1D9E75; border-radius: 8px; cursor: pointer; font-family: inherit; transition: background .12s; }
+  .btn-next:hover { background: #9FE1CB; }
+  .btn-sm { padding: 8px 14px; font-size: 13px; font-weight: 500; border-radius: 8px; cursor: pointer; font-family: inherit; border: 1px solid #1D9E75; background: #E1F5EE; color: #085041; }
+  .btn-sm:hover { background: #9FE1CB; }
+  .btn-gray { border: 1px solid #d0cfc9; background: white; color: #666663; }
+  .btn-gray:hover { background: #f5f5f3; }
+  .pill { padding: 2px 7px; border-radius: 4px; font-weight: 600; font-size: 13px; }
+  .pt { background: #E1F5EE; color: #085041; } .pa { background: #FAEEDA; color: #854F0B; } .pb2 { background: #E6F1FB; color: #0C447C; }
+  .mono { font-family: 'Courier New', monospace; font-size: 13px; }
+  .sec-lbl { font-size: 13px; font-weight: 600; color: #1a1a18; margin: 0 0 9px; }
+  .seg { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 11px; }
+  .segbtn { padding: 7px 12px; font-size: 13px; border: 1px solid #e8e7e3; border-radius: 8px; background: white; color: #1a1a18; cursor: pointer; user-select: none; font-family: inherit; }
+  .segbtn:hover { background: #f5f5f3; }
+  .segbtn.on { background: #E1F5EE; border-color: #1D9E75; color: #085041; font-weight: 500; }
+  .ninp { width: 80px; font-size: 13px; padding: 7px 9px; }
+  .done-box { display: none; margin-top: 1.25rem; padding: 1.1rem 1.25rem; background: #E1F5EE; border-radius: 10px; border: 1px solid #1D9E75; }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .4; } }
+  .arrow-shift { animation: pulse 1.2s ease-in-out infinite; }
+</style>
+</head>
+<body>
+
+<div class="app">
+<div class="hdr">
+  <p class="ttl">Chemical Equilibrium &amp; Acid-Base Titrations</p>
+  <p class="sub">Alberta Chemistry 30 · 5 interactive modules with videos</p>
+  <div class="tabs" role="tablist">
+    <div class="tab on" onclick="goTo(0)" id="t0">1. Equilibrium</div>
+    <div class="tab" onclick="goTo(1)" id="t1">2. Le Châtelier</div>
+    <div class="tab" onclick="goTo(2)" id="t2">3. ICE Tables</div>
+    <div class="tab" onclick="goTo(3)" id="t3">4. Acids &amp; Bases</div>
+    <div class="tab" onclick="goTo(4)" id="t4">5. Titrations</div>
+  </div>
+</div>
+
+<div class="body">
+<div class="pbw"><div class="pb" id="pb" style="width:20%"></div></div>
+
+<!-- ===== MODULE 1 ===== -->
+<div class="sec on" id="s0">
+  <div class="cbox">
+    <p class="cbox-ttl">What is chemical equilibrium?</p>
+    <p class="cbox-body">In a <strong>closed system</strong>, equilibrium is reached when the <strong>forward and reverse reaction rates become equal</strong>. Concentrations appear constant, but at the molecular level both reactions continue — this is why we call it <em>dynamic</em> equilibrium.</p>
+  </div>
+
+  <div class="acc">
+    <div class="acc-btn" onclick="tog('a1')"><span>Why is it called "dynamic" equilibrium?</span><span class="acc-ico" id="a1-i">▼</span></div>
+    <div class="acc-body" id="a1">
+      <p>When a reaction first starts, the forward rate is fast (lots of reactants) and the reverse rate is zero (no products yet). As products build up, the forward rate slows and the reverse rate speeds up.</p>
+      <p>Eventually the two rates become <strong>equal</strong>. The concentrations of all species stop changing — they look "frozen." But the reactions have not stopped: molecules still react forward and backward at the same rate, so there is no <em>net</em> change.</p>
+      <div class="cl cl-t">Equilibrium is a balance of rates, not a stop. Think of a busy escalator: people step on and off constantly, but the number of people on it stays the same.</div>
+    </div>
+  </div>
+
+  <div class="acc">
+    <div class="acc-btn" onclick="tog('a2')"><span>Writing the equilibrium constant expression (Kc)</span><span class="acc-ico" id="a2-i">▼</span></div>
+    <div class="acc-body" id="a2">
+      <p>The equilibrium constant expression is <strong>products over reactants</strong>, with each stoichiometric coefficient used as an <strong>exponent</strong>.</p>
+      <span class="wx-eq">For aA + bB ⇌ cC + dD: &nbsp; Kc = [C]ᶜ[D]ᵈ / [A]ᵃ[B]ᵇ</span>
+      <p><strong>Critical rule:</strong> only include aqueous ions (aq) and gases (g). <strong>Exclude pure solids (s) and pure liquids (l)</strong> — their concentrations don't change, so they're built into the constant.</p>
+      <div class="cl cl-a">Example: For N₂(g) + 3H₂(g) ⇌ 2NH₃(g): Kc = [NH₃]² / ([N₂][H₂]³)</div>
+    </div>
+  </div>
+
+  <div class="acc">
+    <div class="acc-btn" onclick="tog('a3')"><span>What does the value of Kc tell you?</span><span class="acc-ico" id="a3-i">▼</span></div>
+    <div class="acc-body" id="a3">
+      <p>The size of Kc tells you which side of the reaction is favoured at equilibrium:</p>
+      <p>• <strong>Kc &gt; 1</strong> → products are favoured (equilibrium lies right)</p>
+      <p>• <strong>Kc &lt; 1</strong> → reactants are favoured (equilibrium lies left)</p>
+      <p>• <strong>Kc = 1</strong> → neither strongly favoured</p>
+      <div class="cl cl-b">The single most important fact about Kc: <strong>only a change in temperature changes its value.</strong> Concentration and pressure changes shift the position of equilibrium, but Kc itself stays the same.</div>
+    </div>
+  </div>
+
+  <div class="cl cl-r"><strong>Common errors to avoid:</strong> (1) including solids or liquids in the Kc expression, (2) forgetting to use stoichiometric coefficients as exponents, and (3) thinking pressure or concentration changes affect the value of Kc — only temperature does.</div>
+
+  <div class="vid-section">
+    <p class="vid-lbl"><span>YouTube</span> Watch: Introduction to Chemical Equilibrium</p>
+    <div class="vid-wrap"><iframe src="https://www.youtube.com/embed/g5wNg_dKsYY?start=524" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+  </div>
+
+  <div class="ccard">
+    <p class="sec-lbl">Build the Kc expression</p>
+    <p style="font-size:13px;color:#666663;margin:0 0 10px;">Select a reaction — the correct equilibrium expression appears, with solids and liquids correctly excluded.</p>
+    <div class="seg" id="kcseg"></div>
+    <div id="kcout"></div>
+  </div>
+
+  <hr class="hrule">
+  <p class="qhead">Knowledge check — Module 1</p>
+  <p class="qprompt">What is the correct Kc expression for 2SO₂(g) + O₂(g) ⇌ 2SO₃(g)?</p>
+  <div id="q1o">
+    <div class="qopt" onclick="A('q1','a')">Kc = [SO₃] / ([SO₂][O₂])</div>
+    <div class="qopt" onclick="A('q1','b')">Kc = [SO₃]² / ([SO₂]²[O₂])</div>
+    <div class="qopt" onclick="A('q1','c')">Kc = [SO₂]²[O₂] / [SO₃]²</div>
+    <div class="qopt" onclick="A('q1','d')">Kc = [SO₃]² / ([SO₂]² + [O₂])</div>
+  </div>
+  <div class="qfb" id="q1f"></div>
+  <hr class="hrule" style="margin-top:.75rem">
+  <p class="qprompt">For CaCO₃(s) ⇌ CaO(s) + CO₂(g), what is the correct Kc expression?</p>
+  <div id="q2o">
+    <div class="qopt" onclick="A('q2','a')">Kc = [CaO][CO₂] / [CaCO₃]</div>
+    <div class="qopt" onclick="A('q2','b')">Kc = [CO₂] / [CaCO₃]</div>
+    <div class="qopt" onclick="A('q2','c')">Kc = [CO₂] &nbsp;(solids are excluded)</div>
+    <div class="qopt" onclick="A('q2','d')">Kc = [CaO][CO₂]</div>
+  </div>
+  <div class="qfb" id="q2f"></div>
+  <hr class="hrule" style="margin-top:.75rem">
+  <p class="qprompt">Which single change will alter the actual value of Kc?</p>
+  <div id="q3o">
+    <div class="qopt" onclick="A('q3','a')">Adding more reactant</div>
+    <div class="qopt" onclick="A('q3','b')">Increasing pressure by reducing volume</div>
+    <div class="qopt" onclick="A('q3','c')">Changing the temperature</div>
+    <div class="qopt" onclick="A('q3','d')">Adding a catalyst</div>
+  </div>
+  <div class="qfb" id="q3f"></div>
+  <button class="btn-next" onclick="goTo(1)">Next: Le Châtelier's Principle →</button>
+</div>
+
+<!-- ===== MODULE 2 ===== -->
+<div class="sec" id="s1">
+  <div class="cbox">
+    <p class="cbox-ttl">Le Châtelier's Principle</p>
+    <p class="cbox-body">When a system at equilibrium is disturbed by a <strong>stress</strong> (a change in concentration, temperature, or pressure), the equilibrium <strong>shifts in the direction that counteracts the stress</strong> and re-establishes balance.</p>
+  </div>
+
+  <div class="acc">
+    <div class="acc-btn" onclick="tog('a4')"><span>Concentration changes</span><span class="acc-ico" id="a4-i">▼</span></div>
+    <div class="acc-body" id="a4">
+      <p>The system shifts <em>away</em> from whatever you add, and <em>toward</em> whatever you remove:</p>
+      <p>• <strong>Add a reactant</strong> → shift RIGHT (toward products)</p>
+      <p>• <strong>Remove a reactant</strong> → shift LEFT</p>
+      <p>• <strong>Add a product</strong> → shift LEFT (toward reactants)</p>
+      <p>• <strong>Remove a product</strong> → shift RIGHT</p>
+      <div class="cl cl-t">Think of the system trying to "undo" your change. Add too much of something and the reaction consumes it; take something away and the reaction replaces it.</div>
+    </div>
+  </div>
+
+  <div class="acc">
+    <div class="acc-btn" onclick="tog('a5')"><span>Temperature changes</span><span class="acc-ico" id="a5-i">▼</span></div>
+    <div class="acc-body" id="a5">
+      <p>Treat <strong>heat as a reactant or product</strong>:</p>
+      <p>• <strong>Endothermic</strong>: heat is a reactant. Increasing temperature shifts RIGHT (favours forward).</p>
+      <p>• <strong>Exothermic</strong>: heat is a product. Increasing temperature shifts LEFT (favours reverse).</p>
+      <div class="cl cl-a">Temperature is the <strong>only</strong> stress that actually changes the value of Kc. All other stresses shift the position of equilibrium but leave Kc unchanged.</div>
+    </div>
+  </div>
+
+  <div class="acc">
+    <div class="acc-btn" onclick="tog('a6')"><span>Pressure and volume changes (critical!)</span><span class="acc-ico" id="a6-i">▼</span></div>
+    <div class="acc-body" id="a6">
+      <p>Pressure changes only matter for <strong>gases</strong>. Count the moles of gas on each side:</p>
+      <p>• <strong>Reduce volume → increase pressure</strong> → shift toward <strong>fewer gas molecules</strong></p>
+      <p>• <strong>Increase volume → decrease pressure</strong> → shift toward <strong>more gas molecules</strong></p>
+      <p>• <strong>Add inert gas at constant volume</strong> → NO effect</p>
+      <p>• <strong>Add inert gas at constant pressure</strong> → shifts away from the gas added</p>
+      <div class="cl cl-b">Example: N₂(g) + 3H₂(g) ⇌ 2NH₃(g) has 4 gas molecules left, 2 right. Increasing pressure shifts RIGHT, toward fewer molecules.</div>
+    </div>
+  </div>
+
+  <div class="vid-section">
+    <p class="vid-lbl"><span>YouTube</span> Watch: Le Châtelier's Principle</p>
+    <div class="vid-wrap"><iframe src="https://www.youtube.com/embed/XmgRRmxS3is" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+  </div>
+
+  <div class="ccard">
+    <p class="sec-lbl">Le Châtelier simulator</p>
+    <p style="font-size:13px;color:#666663;margin:0 0 4px;">Reaction: <span class="mono" style="color:#1a1a18;">N₂(g) + 3H₂(g) ⇌ 2NH₃(g)</span> &nbsp; <span style="color:#854F0B;">(exothermic)</span></p>
+    <p style="font-size:12px;color:#666663;margin:0 0 11px;">4 gas molecules (left) → 2 gas molecules (right). Apply a stress and see which way equilibrium shifts.</p>
+    <div class="seg" id="lcseg"></div>
+    <div id="lcout"></div>
+  </div>
+
+  <hr class="hrule">
+  <p class="qhead">Knowledge check — Module 2</p>
+  <p class="qprompt">The Haber process N₂(g) + 3H₂(g) ⇌ 2NH₃(g) is exothermic. What happens if you <strong>increase the temperature</strong>?</p>
+  <div id="q4o">
+    <div class="qopt" onclick="A('q4','a')">Shifts right — more NH₃ is produced</div>
+    <div class="qopt" onclick="A('q4','b')">Shifts left — heat is a product, so adding heat favours the reverse reaction</div>
+    <div class="qopt" onclick="A('q4','c')">No shift — temperature doesn't affect gas equilibria</div>
+    <div class="qopt" onclick="A('q4','d')">The reaction stops completely</div>
+  </div>
+  <div class="qfb" id="q4f"></div>
+  <hr class="hrule" style="margin-top:.75rem">
+  <p class="qprompt">For N₂(g) + 3H₂(g) ⇌ 2NH₃(g), what happens if you <strong>decrease the volume</strong> (increasing pressure)?</p>
+  <div id="q5o">
+    <div class="qopt" onclick="A('q5','a')">Shifts left — toward the 4 gas molecules</div>
+    <div class="qopt" onclick="A('q5','b')">Shifts right — toward the side with fewer gas molecules (2 on the right)</div>
+    <div class="qopt" onclick="A('q5','c')">No shift — pressure never affects equilibrium</div>
+    <div class="qopt" onclick="A('q5','d')">Kc increases</div>
+  </div>
+  <div class="qfb" id="q5f"></div>
+  <hr class="hrule" style="margin-top:.75rem">
+  <p class="qprompt">You add an <strong>inert gas (argon) at constant volume</strong> to a gaseous equilibrium. What happens?</p>
+  <div id="q6o">
+    <div class="qopt" onclick="A('q6','a')">Shifts toward products</div>
+    <div class="qopt" onclick="A('q6','b')">Shifts toward reactants</div>
+    <div class="qopt" onclick="A('q6','c')">No effect — the partial pressures of the reacting gases are unchanged</div>
+    <div class="qopt" onclick="A('q6','d')">Kc decreases</div>
+  </div>
+  <div class="qfb" id="q6f"></div>
+  <button class="btn-next" onclick="goTo(2)">Next: ICE Tables →</button>
+</div>
+
+<!-- ===== MODULE 3 ===== -->
+<div class="sec" id="s2">
+  <div class="cbox">
+    <p class="cbox-ttl">Equilibrium calculations with ICE tables</p>
+    <p class="cbox-body">An <strong>ICE table</strong> organizes the math for finding equilibrium concentrations. ICE stands for <strong>I</strong>nitial, <strong>C</strong>hange, and <strong>E</strong>quilibrium — three rows that track how each concentration evolves.</p>
+  </div>
+
+  <div class="acc">
+    <div class="acc-btn" onclick="tog('a7')"><span>Setting up an ICE table</span><span class="acc-ico" id="a7-i">▼</span></div>
+    <div class="acc-body" id="a7">
+      <p><strong>I — Initial:</strong> the starting concentrations before any reaction (products usually start at 0).</p>
+      <p><strong>C — Change:</strong> how much each concentration changes, written with the variable <strong>x</strong> and the <strong>stoichiometric ratios</strong>. Reactants decrease (−x), products increase (+x), each scaled by its coefficient.</p>
+      <p><strong>E — Equilibrium:</strong> simply Initial + Change for each species.</p>
+      <div class="cl cl-t">You then substitute the Equilibrium row into the Kc expression and solve for x. A coefficient of 2 gives ±2x.</div>
+    </div>
+  </div>
+
+  <div class="acc">
+    <div class="acc-btn" onclick="tog('a8')"><span>The approximation method (for weak acids &amp; bases)</span><span class="acc-ico" id="a8-i">▼</span></div>
+    <div class="acc-body" id="a8">
+      <p>Solving the Kc expression often gives a quadratic. For weak acids and bases, we can usually avoid it with a shortcut.</p>
+      <p><strong>The assumption:</strong> if x is very small compared to the initial concentration, then [HA] ≈ C₀ (initial concentration), simplifying the math.</p>
+      <p><strong>When is it valid?</strong> Only if the initial concentration is at least <strong>1000× larger</strong> than Ka (or Kb).</p>
+      <p><strong>You MUST verify it:</strong> check that x is less than 5% of C₀. If (x / C₀) × 100% &lt; 5%, the approximation is valid.</p>
+      <div class="cl cl-a">The 5% rule is non-negotiable on exams — always show the check. If x is more than 5% of C₀, the shortcut is invalid and you must use the quadratic formula.</div>
+    </div>
+  </div>
+
+  <div class="vid-section">
+    <p class="vid-lbl"><span>YouTube</span> Watch: ICE Tables &amp; Equilibrium Calculations</p>
+    <div class="vid-wrap"><iframe src="https://www.youtube.com/embed/1GiZzCzmO5Q" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+  </div>
+
+  <p class="sec-lbl">Worked example: 0.100 mol/L acetic acid (Ka = 1.8 × 10⁻⁵)</p>
+  <div class="wx-steps">
+    <div class="wx-step"><div class="wx-n">1</div><div class="wx-c"><p class="wx-lbl">Write the equilibrium and Ka expression</p><span class="wx-eq">CH₃COOH ⇌ CH₃COO⁻ + H⁺</span><span class="wx-eq">Ka = [CH₃COO⁻][H⁺] / [CH₃COOH]</span></div></div>
+    <div class="wx-step"><div class="wx-n">2</div><div class="wx-c"><p class="wx-lbl">Build the ICE table</p><span class="wx-eq">I:  0.100 &nbsp;&nbsp; 0 &nbsp;&nbsp;&nbsp; 0</span><span class="wx-eq">C:  −x &nbsp;&nbsp;&nbsp;&nbsp; +x &nbsp;&nbsp; +x</span><span class="wx-eq">E:  0.100−x &nbsp; x &nbsp;&nbsp; x</span></div></div>
+    <div class="wx-step"><div class="wx-n">3</div><div class="wx-c"><p class="wx-lbl">Apply the approximation</p><p class="wx-det">Is 0.100 &gt; 1000 × Ka = 0.018? Yes, so assume 0.100 − x ≈ 0.100.</p><span class="wx-eq">1.8×10⁻⁵ = x² / 0.100</span></div></div>
+    <div class="wx-step"><div class="wx-n">4</div><div class="wx-c"><p class="wx-lbl">Solve for x = [H⁺]</p><span class="wx-eq">x² = 1.8×10⁻⁶ → x = 1.34×10⁻³ mol/L</span></div></div>
+    <div class="wx-step"><div class="wx-n">5</div><div class="wx-c"><p class="wx-lbl">Verify the 5% rule</p><span class="wx-eq">(1.34×10⁻³ / 0.100) × 100% = 1.34% &lt; 5% ✓</span><p class="wx-det">Approximation valid. Then pH = −log(1.34×10⁻³) = 2.87.</p></div></div>
+  </div>
+
+  <hr class="hrule">
+  <p class="qhead">Knowledge check — Module 3</p>
+  <p class="qprompt">In an ICE table, what does the "C" (Change) row represent?</p>
+  <div id="q7o">
+    <div class="qopt" onclick="A('q7','a')">The final equilibrium concentrations</div>
+    <div class="qopt" onclick="A('q7','b')">How much each concentration changes, using x scaled by the stoichiometric coefficients</div>
+    <div class="qopt" onclick="A('q7','c')">The catalyst concentration</div>
+    <div class="qopt" onclick="A('q7','d')">The value of Kc</div>
+  </div>
+  <div class="qfb" id="q7f"></div>
+  <hr class="hrule" style="margin-top:.75rem">
+  <p class="qprompt">After using the approximation, you find x = 0.008 mol/L with initial C₀ = 0.10 mol/L. Is the approximation valid?</p>
+  <div id="q8o">
+    <div class="qopt" onclick="A('q8','a')">Yes — (0.008 / 0.10) × 100% = 8%, which is acceptable</div>
+    <div class="qopt" onclick="A('q8','b')">No — 8% is greater than 5%, so you must solve the full quadratic instead</div>
+    <div class="qopt" onclick="A('q8','c')">Yes — any value of x under 0.01 is always valid</div>
+    <div class="qopt" onclick="A('q8','d')">It doesn't matter; the approximation is always valid for weak acids</div>
+  </div>
+  <div class="qfb" id="q8f"></div>
+  <button class="btn-next" onclick="goTo(3)">Next: Weak Acids &amp; Bases →</button>
+</div>
+
+<!-- ===== MODULE 4 ===== -->
+<div class="sec" id="s3">
+  <div class="cbox">
+    <p class="cbox-ttl">Weak acids &amp; bases</p>
+    <p class="cbox-body">Strong acids and bases dissociate completely; weak acids and bases only partially dissociate, setting up an equilibrium. A handful of key relationships connect Ka, Kb, pH, and pOH.</p>
+  </div>
+
+  <div class="acc">
+    <div class="acc-btn" onclick="tog('a9')"><span>The Ka, Kb, and Kw relationship</span><span class="acc-ico" id="a9-i">▼</span></div>
+    <div class="acc-body" id="a9">
+      <p>For a conjugate acid-base pair, Ka and Kb are linked by the ion product of water:</p>
+      <span class="wx-eq">Ka × Kb = Kw &nbsp; (at 25°C, Kw = 1.0 × 10⁻¹⁴)</span>
+      <p>So if you know Ka for an acid, you can find Kb for its conjugate base: Kb = Kw / Ka.</p>
+      <div class="cl cl-t">The stronger the acid (large Ka), the weaker its conjugate base (tiny Kb).</div>
+    </div>
+  </div>
+
+  <div class="acc">
+    <div class="acc-btn" onclick="tog('a10')"><span>pH, pOH, and their relationship</span><span class="acc-ico" id="a10-i">▼</span></div>
+    <div class="acc-body" id="a10">
+      <p>pH and pOH are logarithmic measures of acidity and basicity:</p>
+      <span class="wx-eq">pH = −log[H⁺] &nbsp;&nbsp; pOH = −log[OH⁻] &nbsp;&nbsp; pH + pOH = 14</span>
+      <p>To reverse the logarithm: [H⁺] = 10⁻ᵖᴴ. A lower pH means a higher [H⁺] and a more acidic solution.</p>
+      <div class="cl cl-b">The scale is logarithmic — each whole pH unit is a 10× change in [H⁺]. A pH 3 solution has ten times the [H⁺] of a pH 4 solution.</div>
+    </div>
+  </div>
+
+  <div class="acc">
+    <div class="acc-btn" onclick="tog('a11')"><span>Strong vs. weak — how to tell</span><span class="acc-ico" id="a11-i">▼</span></div>
+    <div class="acc-body" id="a11">
+      <p><strong>Strong acids and bases</strong> dissociate essentially 100%. For a strong acid, [H⁺] equals the initial acid concentration directly — no equilibrium calculation needed.</p>
+      <p><strong>Weak acids and bases</strong> only partially dissociate, so you need an ICE-table calculation with Ka or Kb.</p>
+      <div class="cl cl-a">Check your data booklet for the strong acid/base list. The six common strong acids: HCl, HBr, HI, HNO₃, H₂SO₄, HClO₄. If it isn't on the strong list, treat it as weak.</div>
+    </div>
+  </div>
+
+  <div class="vid-section">
+    <p class="vid-lbl"><span>YouTube</span> Watch: Weak Acids &amp; Bases</p>
+    <div class="vid-wrap"><iframe src="https://www.youtube.com/embed/LS67vS10O5Y" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+  </div>
+
+  <div class="ccard">
+    <p class="sec-lbl">pH / pOH calculator</p>
+    <p style="font-size:13px;color:#666663;margin:0 0 11px;">Enter a hydrogen ion concentration to see pH, pOH, and [OH⁻] (at 25°C).</p>
+    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+      <label style="font-size:13px;color:#666663;">[H⁺] =</label>
+      <input type="number" id="hin" value="1.0" step="any" class="ninp" oninput="calcpH()">
+      <label style="font-size:13px;color:#666663;">× 10^</label>
+      <input type="number" id="hexp" value="-3" step="1" class="ninp" style="width:58px;" oninput="calcpH()">
+      <label style="font-size:13px;color:#666663;">mol/L</label>
+    </div>
+    <div id="phout" style="margin-top:13px;"></div>
+  </div>
+
+  <hr class="hrule">
+  <p class="qhead">Knowledge check — Module 4</p>
+  <p class="qprompt">A solution has [H⁺] = 1.0 × 10⁻³ mol/L. What is its pH?</p>
+  <div id="q9o">
+    <div class="qopt" onclick="A('q9','a')">pH = 3</div>
+    <div class="qopt" onclick="A('q9','b')">pH = 11</div>
+    <div class="qopt" onclick="A('q9','c')">pH = −3</div>
+    <div class="qopt" onclick="A('q9','d')">pH = 1.0 × 10⁻³</div>
+  </div>
+  <div class="qfb" id="q9f"></div>
+  <hr class="hrule" style="margin-top:.75rem">
+  <p class="qprompt">For a conjugate acid-base pair at 25°C, Ka × Kb equals:</p>
+  <div id="q10o">
+    <div class="qopt" onclick="A('q10','a')">14</div>
+    <div class="qopt" onclick="A('q10','b')">Kw = 1.0 × 10⁻¹⁴</div>
+    <div class="qopt" onclick="A('q10','c')">1</div>
+    <div class="qopt" onclick="A('q10','d')">[H⁺][OH⁻] × 7</div>
+  </div>
+  <div class="qfb" id="q10f"></div>
+  <hr class="hrule" style="margin-top:.75rem">
+  <p class="qprompt">A solution has pOH = 5 at 25°C. What is its pH?</p>
+  <div id="q11o">
+    <div class="qopt" onclick="A('q11','a')">pH = 5</div>
+    <div class="qopt" onclick="A('q11','b')">pH = 19</div>
+    <div class="qopt" onclick="A('q11','c')">pH = 9</div>
+    <div class="qopt" onclick="A('q11','d')">pH = 7</div>
+  </div>
+  <div class="qfb" id="q11f"></div>
+  <button class="btn-next" onclick="goTo(4)">Next: Titrations &amp; Buffers →</button>
+</div>
+
+<!-- ===== MODULE 5 ===== -->
+<div class="sec" id="s4">
+  <div class="cbox">
+    <p class="cbox-ttl">Acid-base titrations &amp; buffers</p>
+    <p class="cbox-body">A titration curve plots pH against the volume of titrant added. The shape of the curve — and the pH at the <strong>equivalence point</strong> — depends on whether the acid and base are strong or weak. (Chemistry 30 treats these <strong>qualitatively</strong>.)</p>
+  </div>
+
+  <div class="acc">
+    <div class="acc-btn" onclick="tog('a12')"><span>Strong acid + strong base</span><span class="acc-ico" id="a12-i">▼</span></div>
+    <div class="acc-body" id="a12">
+      <p>When a strong acid is titrated with a strong base (or vice versa), the equivalence point occurs at <strong>pH = 7</strong> (neutral). The salt formed (e.g. NaCl) does not hydrolyze.</p>
+      <div class="cl cl-t">The curve has a long, very steep vertical jump right at the equivalence point, passing through pH 7 at its midpoint.</div>
+    </div>
+  </div>
+
+  <div class="acc">
+    <div class="acc-btn" onclick="tog('a13')"><span>Weak acid + strong base, and strong acid + weak base</span><span class="acc-ico" id="a13-i">▼</span></div>
+    <div class="acc-body" id="a13">
+      <p><strong>Weak acid + strong base</strong> → equivalence point pH &gt; 7 (basic). The conjugate base of the weak acid hydrolyzes, producing OH⁻.</p>
+      <p><strong>Strong acid + weak base</strong> → equivalence point pH &lt; 7 (acidic). The conjugate acid of the weak base hydrolyzes, producing H⁺.</p>
+      <div class="cl cl-a">A weak acid + strong base curve also has a flatter "buffer region" before the equivalence point, where the weak acid and its conjugate base are both present.</div>
+    </div>
+  </div>
+
+  <div class="acc">
+    <div class="acc-btn" onclick="tog('a14')"><span>Buffer systems</span><span class="acc-ico" id="a14-i">▼</span></div>
+    <div class="acc-body" id="a14">
+      <p>A <strong>buffer</strong> resists changes in pH when small amounts of acid or base are added.</p>
+      <p><strong>Composition:</strong> a weak acid and its conjugate base (or weak base + conjugate acid) in roughly equal amounts.</p>
+      <p><strong>Function:</strong> the weak acid neutralizes added base; the conjugate base neutralizes added acid — so pH stays nearly constant.</p>
+      <div class="cl cl-b">For Chemistry 30 you need to <strong>recognize</strong> a buffer system. Calculating the pH of a buffer is <strong>not required</strong>. The flat region of a weak acid titration curve is the buffer region.</div>
+    </div>
+  </div>
+
+  <div class="vid-section">
+    <p class="vid-lbl"><span>YouTube</span> Watch: Titrations &amp; Buffers</p>
+    <div class="vid-grid">
+      <div>
+        <p style="font-size:12px;color:#666663;margin:0 0 6px;">Video 1 — Titration curves</p>
+        <div class="vid-wrap"><iframe src="https://www.youtube.com/embed/jdmHjFp_35I?start=163" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+      </div>
+      <div>
+        <p style="font-size:12px;color:#666663;margin:0 0 6px;">Video 2 — Buffer systems</p>
+        <div class="vid-wrap"><iframe src="https://www.youtube.com/embed/dLNsPqDGzms" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ccard">
+    <p class="sec-lbl">Titration curve explorer</p>
+    <div class="cl cl-a" style="margin:0 0 11px;"><strong>Note:</strong> these curves are <strong>illustrative</strong> — idealized shapes that show the qualitative differences between titration types. They are not plotted from real measurements. Use the data-plotting tool below to graph your own experimental results.</div>
+    <div class="seg" id="tcseg"></div>
+    <svg viewBox="0 0 400 270" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:440px;display:block;margin:0 auto;">
+      <line x1="46" y1="20" x2="46" y2="232" stroke="#888780" stroke-width="1"/>
+      <line x1="46" y1="232" x2="384" y2="232" stroke="#888780" stroke-width="1"/>
+      <line x1="46" y1="126" x2="384" y2="126" stroke="#B4B2A9" stroke-width="0.5" stroke-dasharray="4 4"/>
+      <text x="38" y="235" text-anchor="end" font-size="10" fill="#888780">0</text>
+      <text x="38" y="129" text-anchor="end" font-size="10" fill="#888780">7</text>
+      <text x="38" y="25" text-anchor="end" font-size="10" fill="#888780">14</text>
+      <text x="20" y="126" text-anchor="middle" font-size="11" fill="#5F5E5A" transform="rotate(-90 20 126)">pH</text>
+      <text x="215" y="252" text-anchor="middle" font-size="11" fill="#5F5E5A">Volume of titrant added →</text>
+      <path id="tcurve" d="" fill="none" stroke="#1D9E75" stroke-width="2.5"/>
+      <circle id="eqpt" cx="0" cy="0" r="5" fill="#BA7517" stroke="white" stroke-width="1.5" style="display:none"/>
+    </svg>
+    <div id="tcout" style="margin-top:6px;"></div>
+  </div>
+
+  <div class="ccard">
+    <p class="sec-lbl">Plot your own titration data</p>
+    <p style="font-size:13px;color:#666663;margin:0 0 11px;">Enter the volume of titrant added and the measured pH for each reading from your lab, then click Add. Your curve builds as you go.</p>
+    <div style="display:flex;align-items:flex-end;gap:10px;flex-wrap:wrap;margin-bottom:11px;">
+      <div><label style="font-size:12px;color:#666663;display:block;margin-bottom:3px;">Volume (mL)</label>
+        <input type="number" id="pv" step="any" min="0" class="ninp" placeholder="e.g. 10"></div>
+      <div><label style="font-size:12px;color:#666663;display:block;margin-bottom:3px;">pH (0–14)</label>
+        <input type="number" id="pph" step="any" min="0" max="14" class="ninp" placeholder="e.g. 4.5"></div>
+      <button class="btn-sm" onclick="addPoint()">Add point</button>
+      <button class="btn-sm btn-gray" onclick="loadSample()">Load sample</button>
+      <button class="btn-sm btn-gray" onclick="clearPlot()">Clear all</button>
+    </div>
+    <div id="plotErr" style="font-size:12px;color:#993C1D;margin-bottom:8px;display:none;"></div>
+    <svg id="plotSvg" viewBox="0 0 400 272" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:440px;display:block;margin:0 auto;"></svg>
+    <div id="plotList" style="margin-top:10px;"></div>
+  </div>
+
+  <hr class="hrule">
+  <p class="qhead">Knowledge check — Module 5</p>
+  <p class="qprompt">In a <strong>strong acid + strong base</strong> titration, what is the pH at the equivalence point?</p>
+  <div id="q12o">
+    <div class="qopt" onclick="A('q12','a')">pH = 7 — the salt formed does not hydrolyze</div>
+    <div class="qopt" onclick="A('q12','b')">pH &gt; 7 — basic</div>
+    <div class="qopt" onclick="A('q12','c')">pH &lt; 7 — acidic</div>
+    <div class="qopt" onclick="A('q12','d')">It depends on the concentration of the acid</div>
+  </div>
+  <div class="qfb" id="q12f"></div>
+  <hr class="hrule" style="margin-top:.75rem">
+  <p class="qprompt">A <strong>weak acid</strong> is titrated with a <strong>strong base</strong>. The equivalence point pH is:</p>
+  <div id="q13o">
+    <div class="qopt" onclick="A('q13','a')">Exactly 7</div>
+    <div class="qopt" onclick="A('q13','b')">Greater than 7 — the conjugate base of the weak acid hydrolyzes, producing OH⁻</div>
+    <div class="qopt" onclick="A('q13','c')">Less than 7 — the conjugate acid hydrolyzes</div>
+    <div class="qopt" onclick="A('q13','d')">Always exactly 14</div>
+  </div>
+  <div class="qfb" id="q13f"></div>
+  <hr class="hrule" style="margin-top:.75rem">
+  <p class="qprompt">Which combination correctly describes a <strong>buffer</strong>?</p>
+  <div id="q14o">
+    <div class="qopt" onclick="A('q14','a')">A strong acid and a strong base mixed together</div>
+    <div class="qopt" onclick="A('q14','b')">A weak acid and its conjugate base in roughly equal amounts</div>
+    <div class="qopt" onclick="A('q14','c')">Any solution with pH = 7</div>
+    <div class="qopt" onclick="A('q14','d')">A concentrated strong acid only</div>
+  </div>
+  <div class="qfb" id="q14f"></div>
+
+  <div class="done-box" id="done">
+    <p style="font-size:16px;font-weight:600;color:#085041;margin:0 0 5px;">Activity complete! 🎉</p>
+    <p style="font-size:14px;color:#0F6E56;margin:0 0 12px;">You've worked through all five modules on equilibrium and titrations.</p>
+    <p style="font-size:13px;color:#085041;font-weight:500;margin:0 0 8px;">Your completion code:</p>
+    <div style="font-family:'Courier New',monospace;font-size:22px;font-weight:700;color:#085041;background:white;border:2px solid #1D9E75;border-radius:8px;padding:10px 16px;display:inline-block;letter-spacing:3px;">CHEM30-EQ</div>
+    <p style="font-size:12px;color:#0F6E56;margin-top:8px;">Submit this code to your teacher via Google Classroom to receive credit for completing this activity.</p>
+  </div>
+</div>
+
+</div>
+</div>
+
+<script>
+var cur = 0;
+function goTo(n){
+  document.getElementById('s'+cur).classList.remove('on');
+  document.getElementById('t'+cur).classList.remove('on');
+  cur = n;
+  document.getElementById('s'+n).classList.add('on');
+  document.getElementById('t'+n).classList.add('on');
+  document.getElementById('pb').style.width = ((n+1)/5*100)+'%';
+  window.scrollTo(0,0);
+}
+function tog(id){
+  var el=document.getElementById(id), ico=document.getElementById(id+'-i');
+  var open = el.style.display!=='none' && el.style.display!=='';
+  el.style.display = open?'none':'block';
+  if(ico) ico.classList.toggle('open', !open);
+}
+
+var QA = {
+  q1:{c:'b',msg:'Correct! Products over reactants, coefficients as exponents: Kc = [SO₃]² / ([SO₂]²[O₂]).'},
+  q2:{c:'c',msg:'Correct! Solids are excluded. Since CaCO₃ and CaO are solids, only the gas CO₂ remains: Kc = [CO₂].'},
+  q3:{c:'c',msg:'Correct! Only a change in temperature alters the value of Kc. Other changes shift the position of equilibrium but leave Kc the same.'},
+  q4:{c:'b',msg:'Correct! For an exothermic reaction heat is a product. Adding heat shifts equilibrium left toward reactants — and Kc decreases.'},
+  q5:{c:'b',msg:'Correct! Decreasing volume increases pressure, shifting toward the side with fewer gas molecules — 2 on the right (2NH₃) vs 4 on the left.'},
+  q6:{c:'c',msg:'Correct! Adding an inert gas at constant volume does not change the partial pressures of the reacting gases, so there is no shift.'},
+  q7:{c:'b',msg:'Correct! The Change row shows how much each concentration changes, written with x scaled by each species\u2019 coefficient (reactants −x, products +x).'},
+  q8:{c:'b',msg:'Correct! (0.008 / 0.10) × 100% = 8%, which exceeds 5%. The approximation is invalid — solve the full quadratic instead.'},
+  q9:{c:'a',msg:'Correct! pH = −log(1.0×10⁻³) = 3.'},
+  q10:{c:'b',msg:'Correct! Ka × Kb = Kw = 1.0 × 10⁻¹⁴ at 25°C, so Kb = Kw / Ka.'},
+  q11:{c:'c',msg:'Correct! pH + pOH = 14, so pH = 14 − 5 = 9 (basic).'},
+  q12:{c:'a',msg:'Correct! Strong acid + strong base reaches equivalence at pH = 7 — the salt formed does not hydrolyze.'},
+  q13:{c:'b',msg:'Correct! Weak acid + strong base gives equivalence pH > 7. The conjugate base hydrolyzes water, producing OH⁻.'},
+  q14:{c:'b',msg:'Correct! A buffer is a weak acid and its conjugate base (or weak base + conjugate acid) in roughly equal amounts.'}
+};
+function A(qid,chosen){
+  var q=QA[qid];
+  var opts=document.querySelectorAll('#'+qid+'o .qopt');
+  opts.forEach(function(o){o.classList.add('locked');});
+  var L=['a','b','c','d'];
+  opts[L.indexOf(chosen)].classList.add(chosen===q.c?'right':'wrong');
+  if(chosen!==q.c) opts[L.indexOf(q.c)].classList.add('right');
+  var fb=document.getElementById(qid+'f');
+  fb.textContent=(chosen===q.c?'✓ ':'✗ Not quite. ')+q.msg;
+  fb.className='qfb on '+(chosen===q.c?'right':'wrong');
+  if(qid==='q14' && chosen===q.c){
+    document.getElementById('t4').classList.add('done');
+    var d=document.getElementById('done'); d.style.display='block';
+    d.scrollIntoView({behavior:'smooth', block:'center'});
+  }
+}
+
+var KCR = [
+  {eq:'N₂(g) + 3H₂(g) ⇌ 2NH₃(g)', kc:'Kc = [NH₃]² / ([N₂][H₂]³)', note:'All species are gases — all included. Coefficients 2 and 3 become exponents.'},
+  {eq:'CaCO₃(s) ⇌ CaO(s) + CO₂(g)', kc:'Kc = [CO₂]', note:'CaCO₃ and CaO are solids — both excluded. Only the gas CO₂ appears.'},
+  {eq:'2SO₂(g) + O₂(g) ⇌ 2SO₃(g)', kc:'Kc = [SO₃]² / ([SO₂]²[O₂])', note:'All gases. Coefficients 2 (SO₃) and 2 (SO₂) become exponents; O₂ has an implied exponent of 1.'},
+  {eq:'AgCl(s) ⇌ Ag⁺(aq) + Cl⁻(aq)', kc:'Kc = [Ag⁺][Cl⁻]', note:'AgCl is a solid — excluded. Both aqueous ions are included (this Kc is also called Ksp).'},
+  {eq:'H₂(g) + I₂(g) ⇌ 2HI(g)', kc:'Kc = [HI]² / ([H₂][I₂])', note:'All gases included. The coefficient 2 on HI becomes a squared exponent.'}
+];
+function buildKc(){
+  var seg=document.getElementById('kcseg');
+  KCR.forEach(function(r,i){
+    var b=document.createElement('div');
+    b.className='segbtn'+(i===0?' on':'');
+    b.textContent=r.eq;
+    b.onclick=function(){
+      document.querySelectorAll('#kcseg .segbtn').forEach(function(x){x.classList.remove('on');});
+      b.classList.add('on'); showKc(i);
+    };
+    seg.appendChild(b);
+  });
+  showKc(0);
+}
+function showKc(i){
+  var r=KCR[i];
+  document.getElementById('kcout').innerHTML='<div class="fbox">'+r.kc+'</div><div class="cl cl-t" style="margin:0;">'+r.note+'</div>';
+}
+
+var LC = [
+  {s:'Add N₂ (reactant)', dir:'right', msg:'Adding a reactant shifts equilibrium RIGHT — the system consumes the added N₂ by making more NH₃.'},
+  {s:'Add NH₃ (product)', dir:'left', msg:'Adding a product shifts equilibrium LEFT — the system consumes the added NH₃ by reforming N₂ and H₂.'},
+  {s:'Remove NH₃ (product)', dir:'right', msg:'Removing a product shifts equilibrium RIGHT — the system makes more NH₃ to replace what was removed.'},
+  {s:'Increase temperature', dir:'left', msg:'This reaction is exothermic (heat is a product). Adding heat shifts equilibrium LEFT — and lowers Kc.'},
+  {s:'Decrease temperature', dir:'right', msg:'For an exothermic reaction, removing heat shifts equilibrium RIGHT toward products — and raises Kc.'},
+  {s:'Increase pressure (↓ volume)', dir:'right', msg:'Higher pressure shifts toward fewer gas molecules. There are 2 on the right vs 4 on the left, so it shifts RIGHT.'},
+  {s:'Add argon (constant volume)', dir:'none', msg:'Adding an inert gas at constant volume does not change the partial pressures of the reacting gases — NO shift occurs.'}
+];
+function buildLC(){
+  var seg=document.getElementById('lcseg');
+  LC.forEach(function(r,i){
+    var b=document.createElement('div');
+    b.className='segbtn'+(i===0?' on':'');
+    b.textContent=r.s;
+    b.onclick=function(){
+      document.querySelectorAll('#lcseg .segbtn').forEach(function(x){x.classList.remove('on');});
+      b.classList.add('on'); showLC(i);
+    };
+    seg.appendChild(b);
+  });
+  showLC(0);
+}
+function showLC(i){
+  var r=LC[i], arrow, col, lab;
+  if(r.dir==='right'){ arrow='⟶'; col='#0F6E56'; lab='Shifts RIGHT (toward products)'; }
+  else if(r.dir==='left'){ arrow='⟵'; col='#993C1D'; lab='Shifts LEFT (toward reactants)'; }
+  else { arrow='═'; col='#185FA5'; lab='No shift'; }
+  document.getElementById('lcout').innerHTML='<div style="text-align:center;padding:12px;background:#f5f5f3;border-radius:8px;margin-bottom:8px;"><span class="arrow-shift" style="font-size:30px;color:'+col+';font-weight:600;">'+arrow+'</span><p style="font-size:14px;font-weight:500;color:'+col+';margin:4px 0 0;">'+lab+'</p></div><div class="cl" style="margin:0;background:#f5f5f3;color:#444441;border-left:3px solid '+col+';border-radius:0 8px 8px 0;">'+r.msg+'</div>';
+}
+
+function calcpH(){
+  var m=parseFloat(document.getElementById('hin').value);
+  var e=parseInt(document.getElementById('hexp').value,10);
+  if(isNaN(m)||isNaN(e)||m<=0){ document.getElementById('phout').innerHTML='<p style="font-size:13px;color:#993C1D;">Enter a valid positive concentration.</p>'; return; }
+  var H=m*Math.pow(10,e);
+  var pH=-Math.log10(H), pOH=14-pH, OH=Math.pow(10,-pOH);
+  var label = pH<7?'Acidic':(pH>7?'Basic':'Neutral');
+  var col = pH<7?'#993C1D':(pH>7?'#0C447C':'#085041');
+  document.getElementById('phout').innerHTML='<div class="igrid" style="margin:0;"><div class="icard"><p class="icard-lbl">pH</p><p class="icard-val" style="color:'+col+';">'+pH.toFixed(2)+'</p></div><div class="icard"><p class="icard-lbl">pOH</p><p class="icard-val">'+pOH.toFixed(2)+'</p></div><div class="icard"><p class="icard-lbl">[OH⁻] (mol/L)</p><p class="icard-val" style="font-size:13px;">'+OH.toExponential(2)+'</p></div><div class="icard"><p class="icard-lbl">Classification</p><p class="icard-val" style="color:'+col+';font-size:14px;">'+label+'</p></div></div>';
+}
+
+var TC = {
+  ss:{ label:'Strong acid + strong base', col:'#1D9E75', eqV:25, eqPH:7.0, eqText:'Equivalence at pH 7 (neutral)',
+       pts:[[0,1.0],[5,1.2],[10,1.5],[15,1.9],[20,2.5],[23,3.6],[24,4.6],[25,7.0],[26,9.4],[27,10.4],[30,11.4],[40,12.1],[50,12.5]] },
+  ws:{ label:'Weak acid + strong base', col:'#BA7517', eqV:25, eqPH:8.7, eqText:'Equivalence at pH > 7 (basic)',
+       pts:[[0,2.9],[5,4.0],[10,4.6],[12.5,4.74],[15,4.9],[20,5.6],[23,6.6],[24,7.3],[25,8.7],[26,10.3],[27,11.0],[30,11.6],[40,12.2],[50,12.5]] },
+  sw:{ label:'Strong acid + weak base', col:'#378ADD', eqV:25, eqPH:5.3, eqText:'Equivalence at pH < 7 (acidic)',
+       pts:[[0,11.1],[5,10.0],[10,9.4],[12.5,9.26],[15,9.1],[20,8.4],[23,7.4],[24,6.7],[25,5.3],[26,3.7],[27,3.0],[30,2.4],[40,1.8],[50,1.5]] }
+};
+function mapX(v){ return 46 + (v/50)*338; }
+function mapY(ph){ return 232 - (ph/14)*206; }
+function buildTC(){
+  var seg=document.getElementById('tcseg');
+  var keys=['ss','ws','sw'];
+  keys.forEach(function(k,i){
+    var b=document.createElement('div');
+    b.className='segbtn'+(i===0?' on':'');
+    b.textContent=TC[k].label;
+    b.onclick=function(){
+      document.querySelectorAll('#tcseg .segbtn').forEach(function(x){x.classList.remove('on');});
+      b.classList.add('on'); showTC(k);
+    };
+    seg.appendChild(b);
+  });
+  showTC('ss');
+}
+function showTC(k){
+  var c=TC[k];
+  var d='M'+mapX(c.pts[0][0]).toFixed(1)+' '+mapY(c.pts[0][1]).toFixed(1);
+  for(var i=1;i<c.pts.length;i++){ d+=' L'+mapX(c.pts[i][0]).toFixed(1)+' '+mapY(c.pts[i][1]).toFixed(1); }
+  var path=document.getElementById('tcurve');
+  path.setAttribute('d',d); path.setAttribute('stroke',c.col);
+  var ex=mapX(c.eqV), ey=mapY(c.eqPH);
+  var pt=document.getElementById('eqpt');
+  pt.setAttribute('cx',ex.toFixed(1)); pt.setAttribute('cy',ey.toFixed(1)); pt.style.display='block';
+  document.getElementById('tcout').innerHTML='<div class="cl" style="margin:0;background:#f5f5f3;color:#444441;border-left:3px solid '+c.col+';border-radius:0 8px 8px 0;"><strong>'+c.eqText+'.</strong> The orange dot marks the equivalence point — where moles of acid and base are stoichiometrically equal.</div>';
+}
+
+var plotData = [];
+function niceMax(m){ if(m<=10) return 10; return Math.ceil(m/5)*5; }
+function pErr(msg){ var e=document.getElementById('plotErr'); e.textContent=msg; e.style.display='block'; }
+function addPoint(){
+  document.getElementById('plotErr').style.display='none';
+  var v=parseFloat(document.getElementById('pv').value);
+  var ph=parseFloat(document.getElementById('pph').value);
+  if(isNaN(v)||isNaN(ph)){ pErr('Enter both a volume and a pH value.'); return; }
+  if(v<0){ pErr('Volume must be 0 or greater.'); return; }
+  if(ph<0||ph>14){ pErr('pH must be between 0 and 14.'); return; }
+  plotData.push({v:v,ph:ph});
+  document.getElementById('pv').value='';
+  document.getElementById('pph').value='';
+  document.getElementById('pv').focus();
+  drawPlot();
+}
+function removePoint(i){ plotData.splice(i,1); drawPlot(); }
+function clearPlot(){ plotData=[]; document.getElementById('plotErr').style.display='none'; drawPlot(); }
+function loadSample(){
+  plotData=[{v:0,ph:1.0},{v:5,ph:1.3},{v:10,ph:1.7},{v:15,ph:2.2},{v:20,ph:3.0},{v:23,ph:4.1},{v:24,ph:5.6},{v:25,ph:7.0},{v:26,ph:8.5},{v:27,ph:10.0},{v:30,ph:11.3},{v:35,ph:11.9},{v:40,ph:12.2}];
+  document.getElementById('plotErr').style.display='none';
+  drawPlot();
+}
+function drawPlot(){
+  var maxV = niceMax(plotData.length ? Math.max.apply(null, plotData.map(function(p){return p.v;})) : 25);
+  function mx(v){ return 46 + (v/maxV)*338; }
+  function my(ph){ return 232 - (ph/14)*206; }
+  var s='';
+  s+='<line x1="46" y1="20" x2="46" y2="232" stroke="#888780" stroke-width="1"/>';
+  s+='<line x1="46" y1="232" x2="384" y2="232" stroke="#888780" stroke-width="1"/>';
+  [0,7,14].forEach(function(ph){
+    var y=my(ph);
+    if(ph===7) s+='<line x1="46" y1="'+y.toFixed(1)+'" x2="384" y2="'+y.toFixed(1)+'" stroke="#B4B2A9" stroke-width="0.5" stroke-dasharray="4 4"/>';
+    s+='<text x="38" y="'+(y+3).toFixed(1)+'" text-anchor="end" font-size="10" fill="#888780">'+ph+'</text>';
+  });
+  [0,maxV/2,maxV].forEach(function(v){
+    s+='<text x="'+mx(v).toFixed(1)+'" y="246" text-anchor="middle" font-size="10" fill="#888780">'+(Math.round(v*10)/10)+'</text>';
+  });
+  s+='<text x="20" y="126" text-anchor="middle" font-size="11" fill="#5F5E5A" transform="rotate(-90 20 126)">pH</text>';
+  s+='<text x="215" y="264" text-anchor="middle" font-size="11" fill="#5F5E5A">Volume added (mL)</text>';
+  var sorted=plotData.slice().sort(function(a,b){return a.v-b.v;});
+  if(sorted.length>1){
+    var poly=sorted.map(function(p){return mx(p.v).toFixed(1)+','+my(p.ph).toFixed(1);}).join(' ');
+    s+='<polyline points="'+poly+'" fill="none" stroke="#1D9E75" stroke-width="2"/>';
+  }
+  if(sorted.length>=3){
+    var best=-1, eqV=null, eqPH=null;
+    for(var i=0;i<sorted.length-1;i++){
+      var dv=sorted[i+1].v-sorted[i].v;
+      if(dv<=0) continue;
+      var slope=Math.abs(sorted[i+1].ph-sorted[i].ph)/dv;
+      if(slope>best){ best=slope; eqV=(sorted[i].v+sorted[i+1].v)/2; eqPH=(sorted[i].ph+sorted[i+1].ph)/2; }
+    }
+    if(eqV!==null){
+      s+='<circle cx="'+mx(eqV).toFixed(1)+'" cy="'+my(eqPH).toFixed(1)+'" r="5" fill="#BA7517" stroke="white" stroke-width="1.5"/>';
+    }
+  }
+  sorted.forEach(function(p){
+    s+='<circle cx="'+mx(p.v).toFixed(1)+'" cy="'+my(p.ph).toFixed(1)+'" r="3.5" fill="#0F6E56"/>';
+  });
+  document.getElementById('plotSvg').innerHTML=s;
+
+  var list='';
+  if(plotData.length===0){
+    list='<p style="font-size:12px;color:#666663;margin:0;">No data points yet. Enter a volume and pH above, then click Add — or try Load sample.</p>';
+  } else {
+    if(plotData.length>=3){
+      list+='<p style="font-size:12px;color:#854F0B;margin:0 0 7px;">The orange dot estimates the equivalence point — the steepest jump in your data.</p>';
+    }
+    list+='<div style="display:flex;flex-wrap:wrap;gap:6px;">';
+    plotData.forEach(function(p,i){
+      list+='<span style="display:inline-flex;align-items:center;gap:6px;font-size:12px;font-family:\'Courier New\',monospace;background:#f5f5f3;border-radius:6px;padding:4px 9px;color:#1a1a18;">'+p.v+' mL, pH '+p.ph+'<span onclick="removePoint('+i+')" style="cursor:pointer;color:#993C1D;font-weight:700;" title="remove">×</span></span>';
+    });
+    list+='</div>';
+  }
+  document.getElementById('plotList').innerHTML=list;
+}
+
+buildKc(); buildLC(); calcpH(); buildTC(); drawPlot();
+['a1','a2','a3','a4','a5','a6','a7','a8','a9','a10','a11','a12','a13','a14'].forEach(function(id){
+  var el=document.getElementById(id); if(el) el.style.display='none';
+});
+</script>
+</body>
+</html>
